@@ -39,17 +39,11 @@ class MoviesActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         supportFragmentManager.popBackStack(popularMoviesFragment.javaClass.name, 0)
-        fragmentTransaction.add(
+        fragmentTransaction.replace(
             R.id.rl_frag_container,
             popularMoviesFragment,
             popularMoviesFragment.javaClass.name
         )
-        //check fragment already exist then not set it in add to back stack
-        val fragmentExits = fragmentManager.findFragmentByTag(popularMoviesFragment.javaClass.name)
-        if (fragmentExits == null) {
-            // not exist
-            fragmentTransaction.addToBackStack(popularMoviesFragment.javaClass.name)
-        }
         fragmentTransaction.commit()
     }
 
