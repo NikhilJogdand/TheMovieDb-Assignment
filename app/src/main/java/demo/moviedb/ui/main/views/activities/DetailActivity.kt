@@ -160,8 +160,10 @@ class DetailActivity : AppCompatActivity(), OnVideoClickListener,
         database = CacheDatabase.getInstance(applicationContext)
         networkService = NetworkService.instance
 
-        detailsViewModel = ViewModelProviders.of(this, Injection.provideMovieDetailsRepository())
-            .get(MovieDetailsViewModel::class.java)
+        detailsViewModel = ViewModelProviders.of(this, Injection.provideMovieDetailsRepository(
+            this
+        )).get(MovieDetailsViewModel::class.java)
+        detailsViewModel.insertVisitedMovieDateTime(movie)
 
     }
 

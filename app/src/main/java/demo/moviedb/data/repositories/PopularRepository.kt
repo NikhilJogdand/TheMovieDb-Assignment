@@ -2,6 +2,7 @@ package demo.moviedb.data.repositories
 
 import androidx.paging.LivePagedListBuilder
 import demo.moviedb.data.database.databaseResults.PopularResults
+import demo.moviedb.data.database.entities.PopularEntry
 import demo.moviedb.data.database.localCache.PopularLocalCache
 import demo.moviedb.data.network.NetworkService
 import demo.moviedb.ui.base.boundaryCallbacks.PopularBoundaryCallbacks
@@ -25,6 +26,9 @@ class PopularRepository(
         return PopularResults(data, networkErrors)
     }
 
+    fun getAllPopularMovieVisitedInLastThirtyMinutes(): List<PopularEntry> {
+        return popularCache.getAllRecentVisitedPopularMovies()
+    }
 
     companion object {
         private const val NETWORK_PAGE_SIZE = 50

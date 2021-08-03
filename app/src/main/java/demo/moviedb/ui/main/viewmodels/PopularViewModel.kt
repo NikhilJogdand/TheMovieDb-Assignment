@@ -20,6 +20,12 @@ class PopularViewModel(private val repository: PopularRepository) : ViewModel() 
         repository.popular(it)
     })
 
+    val recentData = MutableLiveData<List<PopularEntry>>()
+
+    fun popularRecentVisitedResult() {
+        recentData.value = repository.getAllPopularMovieVisitedInLastThirtyMinutes()
+    }
+
     val nowshowing: LiveData<PagedList<PopularEntry>> = Transformations.switchMap(popularResult,
         { it -> it.data })
     val networkErrors: LiveData<String> = Transformations.switchMap(popularResult,

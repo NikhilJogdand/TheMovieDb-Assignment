@@ -32,4 +32,11 @@ interface PopularDao {
     @Query("SELECT COUNT(movieId) FROM popular")
     fun getNumberOfRows(): Int
 
+    @Update
+    fun update(movieEntry: PopularEntry)
+
+    @Query("SELECT * FROM popular WHERE recentVisitedDateTime BETWEEN :fromTime and :currentTime order by recentVisitedDateTime DESC")
+    fun getPopularMovieVisitedRecent(fromTime: String, currentTime: String): List<PopularEntry>
+
+
 }

@@ -1,5 +1,6 @@
 package demo.moviedb.data.database.localCache
 
+import android.text.format.DateUtils
 import androidx.paging.DataSource
 import demo.moviedb.data.database.dao.PopularDao
 import demo.moviedb.data.database.entities.PopularEntry
@@ -22,6 +23,16 @@ class PopularLocalCache(
         }
     }
 
+    /**
+     * update a visited movie in the database, on a background thread.
+     */
+    fun updatePopularMovie(repos: PopularEntry, insertFinished: () -> Unit) {
+        ioExecutor.execute {
+            popularDao.update(repos)
+            insertFinished()
+        }
+    }
+
     fun getAllPopular(): DataSource.Factory<Int, PopularEntry> {
         return popularDao.loadAllPopular()
     }
@@ -30,6 +41,19 @@ class PopularLocalCache(
         val data = runBlocking {
             async(Dispatchers.Default) {
                 val numItems = popularDao.getNumberOfRows()
+                return@async numItems
+            }.await()
+        }
+        return data
+
+    }
+
+    fun getAllRecentVisitedPopularMovies(): List<PopularEntry> {
+        val dateTime = demo.moviedb.utils.DateUtils.getCurrentDateTime()
+        val prevTime = demo.moviedb.utils.DateUtils.getLastThirtySecTime()
+        val data = runBlocking {
+            async(Dispatchers.Default) {
+                val numItems = popularDao.getPopularMovieVisitedRecent(prevTime!!, dateTime!!)
                 return@async numItems
             }.await()
         }

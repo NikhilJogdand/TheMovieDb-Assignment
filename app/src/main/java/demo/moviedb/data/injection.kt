@@ -26,8 +26,8 @@ object Injection {
         return ViewModelPopularFactory(providePopularRepository(context))
     }
 
-    fun provideMovieDetailsRepository(): ViewModelProvider.Factory {
-        val movieDetailsrepo = MovieDetailsRepository()
+    fun provideMovieDetailsRepository(context: Context): ViewModelProvider.Factory {
+        val movieDetailsrepo = MovieDetailsRepository(providePopularCache(context))
         return ViewModelDetailFactory(movieDetailsrepo)
     }
 

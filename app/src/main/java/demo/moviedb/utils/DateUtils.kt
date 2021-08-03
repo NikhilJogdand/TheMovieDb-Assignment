@@ -1,5 +1,6 @@
 package demo.moviedb.utils
 
+import android.text.format.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,6 +29,24 @@ class DateUtils {
             //String date_ = date;
             val dateArray = date.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
             val sdf = SimpleDateFormat("yyyy-MM-dd")
+            try {
+                val mDate = sdf.parse(date)
+                val timeInMilliseconds = mDate.time
+                val dateString = formatDate(timeInMilliseconds).split(" ".toRegex())
+                    .dropLastWhile { it.isEmpty() }.toTypedArray()
+                return dateString[0].substring(0, 3) + " " + dateString[1] + ", " + dateArray[0]
+            } catch (e: ParseException) {
+                // TODO Auto-generated catch block
+                e.printStackTrace()
+            }
+
+            return ""
+        }
+
+        fun getStringDate2(date: String): String {
+            //String date_ = date;
+            val dateArray = date.split("-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm")
             try {
                 val mDate = sdf.parse(date)
                 val timeInMilliseconds = mDate.time
@@ -122,6 +141,26 @@ class DateUtils {
         fun hasSameDate(millisFirst: Long, millisSecond: Long): Boolean {
             val dateFormat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
             return dateFormat.format(millisFirst) == dateFormat.format(millisSecond)
+        }
+
+        fun formatRecentVisitedDateTime(date: String): String {
+            val uiDateFormat = "yyyy-MM-dd hh:mm:ss"
+            val sdf = SimpleDateFormat(uiDateFormat)
+            val mDate = sdf.parse(date)
+            return SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(mDate).toString()
+        }
+
+        fun getCurrentDateTime(): String? {
+            val dateFormat = "yyyy-MM-dd hh:mm:ss"
+            val nowCalender = Calendar.getInstance()
+            return DateFormat.format(dateFormat, nowCalender)
+                .toString()
+        }
+
+        fun getLastThirtySecTime(): String? {
+            val before30MinFromNow = Calendar.getInstance()
+            before30MinFromNow.add(Calendar.MINUTE, -30)
+            return DateFormat.format("yyyy-MM-dd hh:mm:ss", before30MinFromNow).toString()
         }
     }
 

@@ -28,6 +28,7 @@ class PopularEntry {
     var genreString: String? = ""
     var timeAdded: Long? = null
     var tableName: Int = POPULAR
+    var recentVisitedDateTime: String? = null
 
     override fun equals(other: Any?): Boolean {
         return movieId == other

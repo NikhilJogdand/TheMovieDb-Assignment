@@ -5,9 +5,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -27,6 +25,7 @@ import demo.moviedb.ui.base.interfaces.OnMovieClickListener
 import demo.moviedb.ui.main.adapters.PopularAdapter
 import demo.moviedb.ui.main.viewmodels.PopularViewModel
 import demo.moviedb.ui.main.views.activities.DetailActivity
+import demo.moviedb.ui.main.views.activities.MoviesActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -62,8 +61,16 @@ class PopularMoviesFragment : Fragment(), OnMovieClickListener,
         initRecyclerView()
         setSwipeRefreshLayoutListener()
         getPopularData()
-
         return mMainView
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setToolbarTittle()
+    }
+
+    private fun setToolbarTittle() {
+        (activity as MoviesActivity).supportActionBar?.title = "Popular Movies"
     }
 
     private fun initViews() {
@@ -171,6 +178,25 @@ class PopularMoviesFragment : Fragment(), OnMovieClickListener,
             }
             refreshTable()
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.settings_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId){
+            R.id.action_search -> {
+                (activity as MoviesActivity).addRecentMoviesFragment()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {

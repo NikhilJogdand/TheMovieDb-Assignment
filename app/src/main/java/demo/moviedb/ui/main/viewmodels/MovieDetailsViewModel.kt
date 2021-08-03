@@ -2,6 +2,7 @@ package demo.moviedb.ui.main.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import demo.moviedb.data.models.Movie
 import demo.moviedb.data.models.MovieDetail
 import demo.moviedb.data.repositories.MovieDetailsRepository
 
@@ -14,5 +15,9 @@ class MovieDetailsViewModel(private val detailsRepo: MovieDetailsRepository) : V
             movieDetail = detailsRepo.getMovieDetails(movieId)
         }
         return movieDetail!!
+    }
+
+    fun insertVisitedMovieDateTime(movie: Movie) {
+        detailsRepo.updatePopularMovieVisitedDateTime(movie)
     }
 }
